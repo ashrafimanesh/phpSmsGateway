@@ -1,0 +1,21 @@
+{
+    "name": "ashrafi/php-sms-gateway",
+    "description": "php sms gateway",
+    "require": {
+        "php": ">=5.2",
+        "ashrafi/php-connectors": "^1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ramin",
+            "email": "ashrafimanesh@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+    ,"autoload": {
+        "psr-4": {
+            "Ashrafi\\SMSGateway\\": "src/"
+        }
+    }
+}
