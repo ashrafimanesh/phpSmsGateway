@@ -40,25 +40,26 @@ class Kavenegar implements iGateway
             "type" => 1,
             "localid" => null
         );
-        $headers       = array(
-            'Accept: application/json',
-            'Content-Type: application/x-www-form-urlencoded',
-            'charset: utf-8'
-        );
         $url=trim($this->config->getBaseUrl(),'/').'/'.$this->config->getApiKey().'/sms/send.json';
 
         $connector=ConnectorFactory::create(CurlConnector::class,$url,'','','');
         $result=json_decode($connector->run('',$data),JSON_UNESCAPED_UNICODE);
 
         $response->setResult($result);
-        if(!isset($result['return']) || !isset($result['return']['status'])){
+
+        if(!isset($result['return']) || !isset($result['return']['status']) || !isset($result['entries'])){
             $response->setStatus(false);
         }
-        if($result['return']['status']==200){
-            $response->setStatus(true);
-        }
-        else{
-            $response->setStatus(false);
+        else {
+            if($result['return']['status']==200){
+                foreach($result['entries'] as $entry){
+                    $response->addMessageResponse($entry['sender'],$entry['receptor'],$entry['messageid'],$entry['status'],$entry);
+                }
+                $response->setStatus(true);
+            }
+            else{
+                $response->setStatus(false);
+            }
         }
     }
 
