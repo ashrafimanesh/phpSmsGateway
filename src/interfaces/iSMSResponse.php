@@ -9,19 +9,10 @@
 namespace Ashrafi\SMSGateway\interfaces;
 
 
-interface iSMSResponse
+interface iSMSResponse extends iAtomResponse
 {
-    /**
-     * @param $status
-     * @return $this
-     */
-    function setStatus($status);
-    function getStatus();
 
-    /**
-     * @param $result
-     * @return $this
-     */
-    function setResult($result);
-    function getResult();
+    function addMessageResponse($from,$to,$messageId,$status,$extra=[]);
+    function getMessagesResponse();
+
 }

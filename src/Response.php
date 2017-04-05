@@ -14,6 +14,7 @@ use Ashrafi\SMSGateway\interfaces\iSMSResponse;
 class Response implements iSMSResponse
 {
     protected $status,$result;
+    protected $items=[];
 
     /**
      * @param $status
@@ -43,6 +44,17 @@ class Response implements iSMSResponse
     function getResult()
     {
         return $this->result;
+    }
+
+    function addMessageResponse($from, $to, $messageId, $status, $extra = [])
+    {
+        $this->items[]=new MessageResponse($from,$to,$messageId,$status,$extra);
+        return $this;
+    }
+
+    function getMessagesResponse()
+    {
+        return $this->items;
     }
 
 
