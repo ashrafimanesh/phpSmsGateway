@@ -85,7 +85,7 @@ class Kavenegar implements iGateway, iLookupable
 
         $token_names = ['token', 'token2', 'token3'];
 
-        if( is_string($token) ){
+        if( is_string($token) || is_integer($token) ){
             $data['token'] = $token;
         }
         elseif( is_array($token) ){
@@ -98,6 +98,7 @@ class Kavenegar implements iGateway, iLookupable
         if( !is_null($lookupType) ){
             $data['type'] = $lookupType;
         }
+
 
         $connector=ConnectorFactory::create(CurlConnector::class,$url,'','','');
         $result=json_decode($connector->run('',$data),JSON_UNESCAPED_UNICODE);

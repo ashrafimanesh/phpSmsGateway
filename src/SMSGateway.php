@@ -83,9 +83,9 @@ class SMSGateway
     public function verify($to,$token,$message=null){
         $collection = $this->getCollection();
 
-        if( !is_string($token) || !is_array($token)  ){
+        if( !is_string($token) && !is_array($token) && !is_integer($token)  ){
             throw new \InvalidArgumentException('Invalid Argument');
-        }        
+        }
 
         $this->current=$this->using ? $this->using : $collection->key();
 
