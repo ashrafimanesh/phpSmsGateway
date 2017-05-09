@@ -14,7 +14,11 @@ use Ashrafi\SMSGateway\AbstractConfig;
 
 class KavenegarConfig extends AbstractConfig
 {
-    protected $defaultHandler=Kavenegar::class,$apiKey=null,$baseUrl='http://api.kavenegar.com/v1/';
+    protected $defaultHandler=Kavenegar::class;
+    protected $apiKey=null;
+    protected $baseUrl='http://api.kavenegar.com/v1/';
+    protected $lookupTemplate = 'verify';
+    protected $lookupType;
 
     /**
      * @return string
@@ -76,6 +80,34 @@ class KavenegarConfig extends AbstractConfig
     {
         return $this->from;
     }
+
+
+
+    public function setLookupType($type)
+    {
+        $this->lookupType = $type;
+        return $this;
+    }
+
+
+    public function getLookupType()
+    {
+        return $this->lookupType;
+    }
+
+
+    public function setLookupTemplate($template)
+    {
+        $this->lookupTemplate = $template;
+        return $this;
+    }
+
+
+    public function getLookupTemplate()
+    {
+        return $this->lookupTemplate;
+    }
+
 
 
 }

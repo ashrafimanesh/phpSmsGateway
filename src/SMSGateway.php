@@ -3,6 +3,7 @@
 namespace Ashrafi\SMSGateway;
 use Ashrafi\SMSGateway\interfaces\iConfig;
 use Ashrafi\SMSGateway\interfaces\iGateway;
+use Ashrafi\SMSGateway\interfaces\iLookupable;
 use Ashrafi\SMSGateway\interfaces\iSMSResponse;
 
 /**
@@ -78,6 +79,25 @@ class SMSGateway
         return $this->_callSend($to, $message, $from, $gateway,$response);
     }
 
+
+    public function verify($to,$token,$message=null){
+        $collection = $this->getCollection();
+
+        if( !is_string($token) && !is_array($token) && !is_integer($token)  ){
+            throw new \InvalidArgumentException('Invalid Argument');
+        }
+
+        $this->current=$this->using ? $this->using : $collection->key();
+
+        $gateway=$collection[$this->current];
+        $response = new Response();
+        return $this->_callVerify($to, $token, $message, $gateway,$response);
+    }
+
+
+
+
+
     public function tryAll($to,$message,$from=null){
         $collection = $this->getCollection();
         $allResponse=[];
@@ -125,5 +145,26 @@ class SMSGateway
         }
         $gateway->send($to, $message, $response, $from);
         return $response;
+    }
+
+    /**
+     * @param $to
+     * @param $token
+     * @param $message
+     * @param $gateway
+     * @param iSMSResponse $response
+     * @return Response
+     */
+    protected function _callVerify($to, $token, $message, $gateway,iSMSResponse $response)
+    {
+        if (!($gateway instanceof iGateway)) {
+            throw new \InvalidArgumentException('Invalid config set at getInstance method');
+        }
+        if ($gateway instanceof iLookupable){
+            $gateway->verify($to, $token, $response);
+            return $response;
+        }
+        return $this->send($to, $message);
+
     }
 }
